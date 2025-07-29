@@ -1,5 +1,5 @@
-#ifndef _DEDX_H_
-#define _DEDX_H_
+#ifndef _LIBDEDX_H_
+#define _LIBDEDX_H_
 
 #ifdef __cplusplus
 extern "C" {
