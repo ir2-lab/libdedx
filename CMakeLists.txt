@@ -40,7 +40,9 @@ add_library(dedx SHARED
   ${generated_files} 
 )
 
-set_target_properties(dedx PROPERTIES PUBLIC_HEADER src/lib/libdedx.h)
+set_target_properties(dedx PROPERTIES 
+  PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/libdedx.h)
+  
 target_compile_definitions(dedx PRIVATE -DLIBDEDX_EXPORTS)
 
 add_executable(testdedx EXCLUDE_FROM_ALL
