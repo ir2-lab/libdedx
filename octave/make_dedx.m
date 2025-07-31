@@ -1,0 +1,13 @@
+# Compile __dedx__.cpp as an oct binary executable
+
+clear
+
+prefix  = [get_home_directory() '/.local/'];
+
+mkoctfile(['-I' prefix 'include'],...
+          ['-L' prefix 'lib'],...
+          '-ldedx',...
+          ['-Wl,-rpath=' prefix 'lib'],...
+          '-v','__dedx__.cpp')
+
+
