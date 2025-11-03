@@ -45,6 +45,14 @@ set_target_properties(dedx PROPERTIES
   
 target_compile_definitions(dedx PRIVATE -DLIBDEDX_EXPORTS)
 
+target_include_directories(dedx
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/lib>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/lib>
+)
+
 add_executable(testdedx EXCLUDE_FROM_ALL
   src/test/main.cpp)
 
