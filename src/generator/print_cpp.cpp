@@ -4,30 +4,11 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
-#include <charconv>
 
 #include "generator.h"
 
 namespace fs = std::filesystem;
 using namespace std;
-
-// print out a 32bit float so that it is read back the same
-// employ C++17 std::to_chars to be system locale independent
-std::ostream &printfloat(std::ostream &os, float x)
-{
-    // print buffer
-    static constexpr int buff_len = 32;
-    char buff[buff_len]{};
-    // get number of digits for a float -> text -> float round-trip
-    static constexpr auto d = std::numeric_limits<float>::max_digits10;
-    // print the number
-    std::to_chars_result ret =
-            std::to_chars(buff, buff + buff_len, x, std::chars_format::scientific, d);
-    *ret.ptr++ = 'f';
-    *ret.ptr = 0;
-    os << setw(d + 5) << buff;
-    return os;
-};
 
 void indent_line(ostream &cpp, int n)
 {
@@ -41,13 +22,20 @@ int print_vector(ostream &cpp, const vector<float> &data, int n)
     indent_line(cpp, n);
     cpp << "{";
 
+    int oldp = cpp.precision();
+    // get number of digits for a float -> text -> float round-trip
+    static constexpr auto _n_d_ = std::numeric_limits<float>::max_digits10;
+    cpp << std::setprecision(_n_d_);
+
     const int val_per_line = 5;
     for (int i = 0; i < data.size(); ++i) {
         if (i % val_per_line == 0) {
             cpp << endl;
             indent_line(cpp, n + 1);
         }
-        printfloat(cpp, data[i]);
+
+        cpp << setw(_n_d_ + 5) << data[i] << 'f';
+
         if (i < data.size() - 1)
             cpp << ", ";
     }
@@ -55,6 +43,8 @@ int print_vector(ostream &cpp, const vector<float> &data, int n)
 
     indent_line(cpp, n);
     cpp << "}";
+
+    cpp << std::setprecision(oldp);
 
     return 0;
 }
