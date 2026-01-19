@@ -13,7 +13,7 @@ LIBDEDX_API int stopping_xs(STOPPING_MODEL model, int Z1, int Z2, const float **
 
     switch (model) {
     case SM_SRIM96:
-        *Se = (const float *)(&(srim13_data_[Z1][Z2]));
+        *Se = (const float *)(&(srim96_data_[Z1][Z2]));
         break;
     case SM_SRIM13:
         *Se = (const float *)(&(srim13_data_[Z1][Z2]));
