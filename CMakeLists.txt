@@ -58,4 +58,33 @@ message(STATUS "  Install bindir: ${CMAKE_INSTALL_BINDIR}")
 message(STATUS "  Build shared libs: ${BUILD_SHARED_LIBS}")
 message(STATUS "-------------------------------------------------")
 
+# -------------------------
+# CPack packaging
+# -------------------------
+set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+set(CPACK_PACKAGE_VENDOR "ir2-lab")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_DESCRIPTION}")
+set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
 
+if(WIN32)
+  set(CPACK_SYSTEM_NAME "win64")
+endif()
+
+# Components
+set(CPACK_COMPONENTS_ALL Runtime Development)
+
+set(CPACK_COMPONENT_RUNTIME_DISPLAY_NAME "Runtime Library")
+set(CPACK_COMPONENT_RUNTIME_DESCRIPTION
+  "The libdedx.dll shared library required to run applications that use libdedx.")
+
+set(CPACK_COMPONENT_DEVELOPMENT_DISPLAY_NAME "Development Files")
+set(CPACK_COMPONENT_DEVELOPMENT_DESCRIPTION
+  "Import library (libdedx.dll.a), header (libdedx.h), and CMake package config files.")
+set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS Runtime)
+
+# Inno Setup: enable per-component selection in the installer
+set(CPACK_INNOSETUP_COMPONENT_INSTALL ON)
+set(CPACK_INNOSETUP_INSTALL_ROOT "{autopf64}")
+
+include(CPack)

@@ -28,9 +28,13 @@ include(CMakePackageConfigHelpers)
 install(TARGETS dedx
     EXPORT ${PROJECT_NAME}Targets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        COMPONENT Development
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        COMPONENT Runtime
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        COMPONENT Runtime
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        COMPONENT Development
 )
 
 # location where CMake config files will be installed (relocatable)
@@ -41,6 +45,7 @@ install(EXPORT ${PROJECT_NAME}Targets
     FILE ${PROJECT_NAME}Targets.cmake
     NAMESPACE ${PROJECT_NAME}::
     DESTINATION ${CONFIG_INSTALL_DIR}
+    COMPONENT Development
 )
 
 # Generate and install package config + version files
@@ -60,4 +65,5 @@ install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
   DESTINATION "${CONFIG_INSTALL_DIR}"
+  COMPONENT Development
 )
