@@ -27,9 +27,11 @@ option (LIBDEDX_BUILD_TESTS "Build tests" OFF)
 # this should be called after setting the prefix !!
 include (GNUInstallDirs)
 
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH OFF)
-message (STATUS "Install rpath =  ${CMAKE_INSTALL_RPATH}")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_INSTALL_PREFIX STREQUAL "$ENV{HOME}/.local")
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH OFF)
+  message (STATUS "Install rpath =  ${CMAKE_INSTALL_RPATH}")
+endif()
 
 add_subdirectory(src)
 
