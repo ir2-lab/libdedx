@@ -11,22 +11,21 @@ The tables are compiled as a plain C shared library (`.so` or `.dll`) to facilit
 
 ## Usage
 
-The library can be built and installed with `cmake`.
-This is done with the following commands (run from the project directory):
-
-```bash
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-ninja  # or make, nmake etc
-ninja install
+The library provides a single function to access the data:
+```c
+int stopping_xs(STOPPING_MODEL model, int Z1, int Z2, const float **E, const float **Se, int *n);
 ```
-On Linux the default install location is `$HOME/.local`, thus `sudo` is not required.
-On Windows the files to be installed are copied into the folder `build/libdedx`.
-Override the install behavior by setting the option `-DCMAKE_INSTALL_PREFIX="/your/install/location"` when calling `cmake`.
+where
+- `STOPPING_MODEL` is an enumerator which can take up the values `SM_SRIM96`, `SM_SRIM13` and `SM_DPASS22` corresponding to the three stopping parametrizations
+- `Z1, Z2` are the projectile and target atomic numbers, respectively
+- `E` will receive a pointer to an array of energy values in keV/u
+- `Se` will receive a pointer to an array of stopping cross-section values in $10^{-15}$ eV-cm$^2$  
+- `*n` will be set to the number of array elements
+
+The function returns 0 on success and -1 on error.
+Error conditions are either Z out of range or an invalid model value.
 
 The following code shows how to use the library in a C or C++ program.
-
 ```c
 #include <libdedx.h>
 
@@ -41,11 +40,27 @@ stopping_xs(model, Z1, Z2, &E, &Se, &n);
 for(int i=0; i<n; i++) x = Se[i] ...
 ```
 
-The type of parametrization is selected by the int variable `model` which can take up one of the predefined values `SM_SRIM96, SM_SRIM13, DPASS22`.
+## Installation
 
-Z1 and Z2 are the atomic numbers of projectile and target, respectively.
+### Build from source
 
-The function `stopping_xs` takes these parameters as input and returns pointers to arrays of the corresponding energy (in keV/u) and stopping cross-section values (in eV=cm$^2$). The number of array elements is returned in `n`.
+The library can be built and installed with `cmake`.
+This is done with the following commands (run from the project directory):
+
+```bash
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+ninja  # or make, nmake etc
+ninja install
+```
+On Linux the default install location is `$HOME/.local`, thus `sudo` is not required.
+On Windows the files to be installed are copied into the folder `build/libdedx`.
+Override the install behavior by setting the option `-DCMAKE_INSTALL_PREFIX="/your/install/location"` when calling `cmake`.
+
+### Binaries
+
+Binary files (installer or zip) are provided for Win64. They can be downloaded from the releases tab. 
 
 ## Generating the data
 

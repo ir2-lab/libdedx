@@ -39,6 +39,13 @@ if(LIBDEDX_BUILD_TESTS)
   add_subdirectory(test)
 endif()
 
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/README.md"
+    "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt"
+    DESTINATION "${CMAKE_INSTALL_DOCDIR}"
+    COMPONENT Runtime
+)
+
 # ------------------------------
 # CMake configuration summary
 # ------------------------------
@@ -77,11 +84,14 @@ set(CPACK_COMPONENTS_ALL Runtime Development)
 set(CPACK_COMPONENT_RUNTIME_DISPLAY_NAME "Runtime Library")
 set(CPACK_COMPONENT_RUNTIME_DESCRIPTION
   "The libdedx.dll shared library required to run applications that use libdedx.")
+set(CPACK_COMPONENT_RUNTIME_REQUIRED TRUE)
 
 set(CPACK_COMPONENT_DEVELOPMENT_DISPLAY_NAME "Development Files")
 set(CPACK_COMPONENT_DEVELOPMENT_DESCRIPTION
   "Import library (libdedx.dll.a), header (libdedx.h), and CMake package config files.")
 set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS Runtime)
+
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
 
 # Inno Setup: enable per-component selection in the installer
 set(CPACK_INNOSETUP_COMPONENT_INSTALL ON)
