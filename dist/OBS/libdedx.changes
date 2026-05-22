@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 09:34:45 UTC 2026 - Michail Axiotis <psaxioti@gmail.com>
+
+- Release libdedx 0.2.2
+- Debug packages for rpm builds
+- Added CI windows build workflow
+
+-------------------------------------------------------------------
 Fri May  8 09:07:41 UTC 2026 - Michail Axiotis <psaxioti@gmail.com>
 
 - Initial release of libdedx 0.2.1

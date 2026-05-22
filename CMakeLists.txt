@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10.0)
 
 project(libdedx 
-  VERSION 0.2.0 
+  VERSION 0.2.2 
   LANGUAGES C CXX
   DESCRIPTION "A compilation of different parametrizations for the electronic stopping of ions in matter"
   HOMEPAGE_URL https://github.com/ir2-lab/libdedx
