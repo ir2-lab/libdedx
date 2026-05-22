@@ -7,6 +7,7 @@ on:
       - 'v*'
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build-and-package:
@@ -27,6 +28,8 @@ jobs:
           update: true
           path-type: inherit
           install: >-
+            base-devel
+            git
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-cmake
             mingw-w64-ucrt-x86_64-ninja
@@ -41,6 +44,9 @@ jobs:
         id: version
         run: |
           echo "value=$(grep 'CMAKE_PROJECT_VERSION:STATIC' build/CMakeCache.txt | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+
+      - name: Build MSYS2 UCRT64 packages
+        run: bash dist/mingw64/build_pkg.sh ${{ steps.version.outputs.value }}
 
       - name: Create Inno Setup installer
         run: cd build && cpack -G INNOSETUP
@@ -75,6 +81,18 @@ jobs:
         with:
           name: libdedx-windows-devel
           path: build/*-devel.zip
+
+      - name: Upload MSYS2 runtime package
+        uses: actions/upload-artifact@v4
+        with:
+          name: libdedx-msys2-ucrt64-runtime
+          path: dist/mingw64/build/mingw-w64-ucrt-x86_64-libdedx-[0-9]*.pkg.tar.zst
+
+      - name: Upload MSYS2 devel package
+        uses: actions/upload-artifact@v4
+        with:
+          name: libdedx-msys2-ucrt64-devel
+          path: dist/mingw64/build/mingw-w64-ucrt-x86_64-libdedx-devel-*.pkg.tar.zst
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')

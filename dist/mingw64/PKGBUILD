@@ -1,0 +1,46 @@
+# Maintainer: George Apostolopoulos <gapost47.com@proton.me>
+
+_realname=libdedx
+pkgbase=mingw-w64-${_realname}
+pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}"
+         "${MINGW_PACKAGE_PREFIX}-${_realname}-devel")
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="A compilation of different parametrizations for the electronic stopping of ions in matter"
+arch=('any')
+mingw_arch=('ucrt64')
+url="https://github.com/ir2-lab/libdedx"
+license=('spdx:GPL-3.0-or-later')
+makedepends=("${MINGW_PACKAGE_PREFIX}-cmake"
+             "${MINGW_PACKAGE_PREFIX}-ninja"
+             "${MINGW_PACKAGE_PREFIX}-gcc")
+source=("${_realname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+    mkdir -p "${srcdir}/build-${MSYSTEM}" && cd "${srcdir}/build-${MSYSTEM}"
+
+    MSYS2_ARG_CONV_EXCL="-DCMAKE_INSTALL_PREFIX=" \
+    "${MINGW_PREFIX}/bin/cmake" \
+        -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX="${MINGW_PREFIX}" \
+        "${srcdir}/${_realname}-${pkgver}"
+
+    "${MINGW_PREFIX}/bin/cmake" --build .
+}
+
+package_mingw-w64-ucrt-x86_64-libdedx() {
+    pkgdesc="Runtime library: ${pkgdesc}"
+
+    cd "${srcdir}/build-${MSYSTEM}"
+    DESTDIR="${pkgdir}" "${MINGW_PREFIX}/bin/cmake" --install . --component Runtime
+}
+
+package_mingw-w64-ucrt-x86_64-libdedx-devel() {
+    pkgdesc="Development files for ${pkgdesc}"
+    depends=("${MINGW_PACKAGE_PREFIX}-${_realname}")
+
+    cd "${srcdir}/build-${MSYSTEM}"
+    DESTDIR="${pkgdir}" "${MINGW_PREFIX}/bin/cmake" --install . --component Development
+}

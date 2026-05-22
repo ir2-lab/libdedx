@@ -38,7 +38,7 @@ Summary:        Development files for %{name}
 Requires:       %{name}
 
 %description    devel
-Development files for C++ Monte-Carlo code for simulating ion transport in materials with an emphasis on the calculation of material damage.
+Development files for libdedx.
 
 %prep
 %setup -q -n    %{name}
