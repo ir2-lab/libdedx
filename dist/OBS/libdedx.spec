@@ -39,6 +39,8 @@ Development files for libdedx.
 
 %if "%{_vendor}" != "debbuild" && "%{debug_build}" == "1"
 %debug_package
+%else
+%global         debug_package               %{nil}
 %endif
 
 ###############################################################################################################################
@@ -72,7 +74,13 @@ strip --strip-unneeded %{buildroot}%{_libdir}/%{name}.so
 /sbin/ldconfig
 
 %files
+%if 0%{?sle_version} == 150500 && 0%{?is_opensuse}
+%dir %{_datadir}/doc/%{name}
+%doc %{_datadir}/doc/%{name}/README.md
+%doc %{_datadir}/doc/%{name}/LICENSE.txt
+%else
 %doc README.md LICENSE.txt
+%endif
 %{_libdir}/%{name}.so
 
 %files devel
