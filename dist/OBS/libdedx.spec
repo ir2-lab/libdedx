@@ -72,7 +72,7 @@ strip --strip-unneeded %{buildroot}%{_libdir}/%{name}.so
 /sbin/ldconfig
 
 %files
-%doc README.md
+%doc README.md LICENSE.txt
 %{_libdir}/%{name}.so
 
 %files devel
