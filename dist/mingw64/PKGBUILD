@@ -1,4 +1,4 @@
-# Maintainer: George Apostolopoulos <gapost47.com@proton.me>
+# Maintainer: George Apostolopoulos <gapost@ipta.demokritos.gr>
 
 _realname=libdedx
 pkgbase=mingw-w64-${_realname}
